@@ -1,12 +1,27 @@
 package com.eriez.springCourse;
 
-import java.sql.SQLOutput;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.net.MulticastSocket;
+
+@Component
 public class MusicPlayer {
-    private Music music;
+    @Value("${musicPlayer.name}")
     private String name;
+    @Value("${musicPlayer.volume}")
     private int volume;
 
+    private Music music1;
+    private Music music2;
+
+    public MusicPlayer(@Qualifier("rockMusic") Music music1, @Qualifier("classicalMusic") Music music2) {
+        this.music1 = music1;
+        this.music2 = music2;
+    }
 
     public String getName() {
         return name;
@@ -24,18 +39,9 @@ public class MusicPlayer {
         this.volume = volume;
     }
 
-    public MusicPlayer(Music music) {
-        this.music = music;
+    public String playMusic() {
+        return "Playing: " + music1.getSong() + "," + music2.getSong();
+
     }
 
-    public MusicPlayer() {
-    }
-
-    public void setMusic(Music music) {
-        this.music = music;
-    }
-
-    public void playMusic() {
-        System.out.println("Playing: " + music.getSong());
-    }
 }
